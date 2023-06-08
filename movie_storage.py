@@ -63,7 +63,7 @@ def update_movie(title, rating):
 
     # Update movie rating
     if title in data:
-        data[title]['Rating'] = rating
+        data[title]['Rating'] = str(rating)
     else:
         return 0
     # Save updated data
