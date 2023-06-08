@@ -189,7 +189,6 @@ Enter choice (1-10): """)
 
 
 if __name__ == "__main__":
-    import movie_storage
 
     # Create an instance of the MovieStorage class
     storage = storage_json.StorageJson("movies_data_base.json")
