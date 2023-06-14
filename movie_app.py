@@ -1,7 +1,6 @@
 import statistics
 import random
 import matplotlib.pyplot as plt
-import storage_json
 from MoviesApp import data_fetcher
 
 
@@ -22,8 +21,14 @@ class MovieApp:
         if data is not None:
             title = data["Title"]
             year = data["Year"]
-            rating = data["imdbRating"]
-            poster_url = data["Poster"]
+            if data["imdbRating"] != 'N/A':
+                rating = data["imdbRating"]
+            else:
+                rating = '0'
+            if data["Poster"] != 'N/A':
+                poster_url = data["Poster"]
+            else:
+                poster_url = "image-not-found-icon.png"
             self._storage.add_movie(title, rating, year, poster_url)
 
     def _command_delete_movie(self):
@@ -44,7 +49,14 @@ class MovieApp:
         """Function to get statistics on the movie ratings in the database """
         movies = self._storage.list_movies()
         # Average rating in the database using statistics method.
-        ratings = [float(movie_info['Rating']) for movie_info in movies.values()]
+        ratings = []
+        for movie_info in movies.values():
+            try:
+                rating = float(movie_info['Rating'])
+            except ValueError:
+                rating = 0
+            ratings.append(rating)
+
         print("The average rating is: {:.1f}".format(statistics.mean(ratings)))
         print("The median rating is:", statistics.median(ratings))
         # Find and print the most highly rated movies
@@ -187,14 +199,3 @@ Enter choice (1-10): """)
             else:
                 print("Invalid choice. Please try again.")
 
-
-if __name__ == "__main__":
-
-    # Create an instance of the MovieStorage class
-    storage = storage_json.StorageJson("movies_data_base.json")
-
-    # Create an instance of the MovieApp class, passing the storage instance
-    app = MovieApp(storage)
-
-    # Run the movie app
-    app.run()
