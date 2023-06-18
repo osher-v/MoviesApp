@@ -1,7 +1,7 @@
 import statistics
 import random
 import matplotlib.pyplot as plt
-from MoviesApp import data_fetcher
+import data_fetcher
 
 
 class MovieApp:
